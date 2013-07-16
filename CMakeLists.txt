@@ -11,6 +11,8 @@ ENABLE_LANGUAGE(CXX)
 
 OPTION(PACKAGE_ZIP "Package Zip file?" OFF)
 
+FIND_PACKAGE(ZLIB REQUIRED)
+
 IF(WIN32)
   SET(BINDING_FILE ${XBMC_BINDINGS}.zip)
   message (STATUS "downloading XBMC bindings: " ${BINDING_FILE})
@@ -25,14 +27,15 @@ IF(WIN32)
   )
   FIND_PATH(XBMC_INCLUDE_DIR xbmc/xbmc_pvr_dll.h ${CMAKE_BINARY_DIR}/include)
   INCLUDE_DIRECTORIES(${XBMC_INCLUDE_DIR}
-                      ${PROJECT_SOURCE_DIR}/lib/rapidxml)
+                      ${PROJECT_SOURCE_DIR}/lib)
   ADD_DEFINITIONS(-DTARGET_WINDOWS)
 ELSE(WIN32)
   FIND_PATH(XBMC_INCLUDE_DIR xbmc/xbmc_pvr_dll.h)
   FIND_PACKAGE(xbmcplatform REQUIRED)
   INCLUDE_DIRECTORIES(${xbmcplatform_INCLUDE_DIRS}
                       ${XBMC_INCLUDE_DIR}
-                      ${PROJECT_SOURCE_DIR}/lib/rapidxml)
+                      ${ZLIB_INCLUDE_DIRS}
+                      ${PROJECT_SOURCE_DIR}/lib)
 ENDIF(WIN32)
 
 SET(SOURCES src/client.cpp
@@ -40,7 +43,8 @@ SET(SOURCES src/client.cpp
 
 ADD_LIBRARY(pvr.iptvsimple ${SOURCES})
 IF(NOT WIN32)
-  TARGET_LINK_LIBRARIES(pvr.iptvsimple ${xbmcplatform_LIBRARIES})
+  TARGET_LINK_LIBRARIES(pvr.iptvsimple ${xbmcplatform_LIBRARIES}
+                                       ${ZLIB_LIBRARIES})
   set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "-s")
   set(CMAKE_MODULE_LINKER_FLAGS_RELEASE "-s")
 ENDIF(NOT WIN32)
