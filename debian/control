@@ -5,7 +5,6 @@ Build-Depends: debhelper (>= 8.0.0), cmake, xbmc-pvr-dev,
                libxbmcplatform-dev, xbmc-addon-dev, zlib1g-dev
 Standards-Version: 3.9.2
 Section: libs
-Homepage: <insert the upstream URL, if relevant>
 
 Package: xbmc-pvr-iptvsimple
 Section: libs
@@ -13,3 +12,10 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Simple IPTV PVR for XBMC
  Simple IPTV PVR for XBMC
+
+Package: xbmc-pvr-iptvsimple-dbg
+Section: debug
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: debug symbols for Simple IPTV PVR for XBMC
+ debug symbols for Simple IPTV PVR for XBMC
